@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
@@ -17,23 +19,28 @@ import ru.javarush.november.redis.Language;
 import ru.javarush.november.repository.dao.CityDAO;
 import ru.javarush.november.repository.dao.CountryDAO;
 import ru.javarush.november.repository.dao.CountryLanguageDAO;
+import ru.javarush.november.test.TestMysqlDB;
+import ru.javarush.november.test.TestRedisDB;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
+public class Handler {
+    private CityDAO cityDAO;
+    private CountryDAO countryDAO;
+    private CountryLanguageDAO countryLanguageDAO;
+    private MySessionFactory sessionFactory;
+    private MyRedisSession redisSession;
+    private RedisClient redisClient;
+    private ObjectMapper mapper;
+    private TestMysqlDB testMysqlDB;
+    private TestRedisDB testRedisDB;
 
-public class Main {
-    CityDAO cityDAO;
-    CountryDAO countryDAO;
-    CountryLanguageDAO countryLanguageDAO;
-    MySessionFactory sessionFactory;
-    MyRedisSession redisSession;
-    RedisClient redisClient;
-    ObjectMapper mapper;
-
-    public Main()
+    public Handler()
     {
         sessionFactory = MySessionFactory.getInstance();
         redisSession = new MyRedisSession();
@@ -42,17 +49,6 @@ public class Main {
         this.cityDAO = new CityDAO(sessionFactory);
         this.countryDAO = new CountryDAO(sessionFactory);
         this.countryLanguageDAO = new CountryLanguageDAO(sessionFactory);
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        Validate validate = new Validate();
-        validate.startLiquiBase();
-        Main main = new Main();
-        List<City> allCities = main.fetchData();
-        List<CityCountry> preparedData = main.transformData(allCities);
-        main.pushToRedis(preparedData);
-        System.out.println("ok");
     }
 
     public List<City> fetchData()
@@ -73,7 +69,7 @@ public class Main {
         }
     }
 
-    private List<CityCountry> transformData(List<City> cities)
+    public List<CityCountry> transformData(List<City> cities)
     {
         return cities.stream().map(city -> {
             CityCountry res = new CityCountry();
@@ -105,7 +101,7 @@ public class Main {
         }).collect(Collectors.toList());
     }
 
-    private void pushToRedis(List<CityCountry> data)
+    public void pushToRedis(List<CityCountry> data)
     {
         try(StatefulRedisConnection<String, String> connection = redisClient.connect()) {
             RedisCommands<String, String> sync = connection.sync();

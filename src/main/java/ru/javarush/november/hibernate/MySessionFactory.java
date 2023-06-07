@@ -10,7 +10,7 @@ import static java.util.Objects.isNull;
 
 public class MySessionFactory {
     private static MySessionFactory instance;
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     private MySessionFactory()
     {
@@ -36,5 +36,12 @@ public class MySessionFactory {
     public Session getSession()
     {
             return sessionFactory.openSession();
+    }
+
+    public void shutdownSession()
+    {
+        if(getSession().isOpen()) {
+            getSession().close();
+        }
     }
 }

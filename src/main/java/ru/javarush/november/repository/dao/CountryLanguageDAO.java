@@ -5,7 +5,8 @@ import ru.javarush.november.hibernate.MySessionFactory;
 import ru.javarush.november.repository.GenericDAO;
 
 public class CountryLanguageDAO extends GenericDAO<CountryLanguage> {
-    public CountryLanguageDAO(MySessionFactory mySessionFactory) {
+    public CountryLanguageDAO(MySessionFactory mySessionFactory)
+    {
         super(CountryLanguage.class, mySessionFactory);
     }
 }

@@ -10,7 +10,8 @@ public class CountryDAO extends GenericDAO<Country> {
         super(Country.class, mySessionFactory);
     }
     @Override
-    public List<Country> getAll() {
+    public List<Country> getAll()
+    {
             return getCurrentSession().createQuery("select  c from Country c join fetch c.languages").list();
     }
 }

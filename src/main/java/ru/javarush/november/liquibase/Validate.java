@@ -15,7 +15,8 @@ import java.util.Map;
 
 public class Validate {
 
-    public void startLiquiBase() throws Exception {
+    public void initLiquibase() throws Exception
+    {
         Map<String, Object> config = new HashMap<>();
 
         Connection connection = ConnectionData.getConnection();

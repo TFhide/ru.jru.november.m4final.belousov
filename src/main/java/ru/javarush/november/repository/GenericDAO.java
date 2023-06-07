@@ -1,7 +1,6 @@
 package ru.javarush.november.repository;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import ru.javarush.november.hibernate.MySessionFactory;
 
@@ -12,7 +11,8 @@ public abstract class GenericDAO<T> {
     Class<T> aClass;
     MySessionFactory sessionFactory;
 
-    public GenericDAO(Class<T> aClass, MySessionFactory sessionFactory) {
+    public GenericDAO(Class<T> aClass, MySessionFactory sessionFactory)
+    {
         this.aClass = aClass;
         this.sessionFactory = sessionFactory;
     }
@@ -44,17 +44,24 @@ public abstract class GenericDAO<T> {
 
     public T save (T entity)
     {
+        getCurrentSession().persist(entity);
         return entity;
     }
 
     public T update (T entity)
     {
+        getCurrentSession().merge(entity);
         return entity;
     }
 
-    public T delete (T entity)
+    public void delete (T entity)
     {
-       return entity;
+       getCurrentSession().remove(entity);
+    }
+
+    public void deleteById(final int entityId)
+    {
+        getCurrentSession().remove(getById(entityId));
     }
 
     public Session getCurrentSession()

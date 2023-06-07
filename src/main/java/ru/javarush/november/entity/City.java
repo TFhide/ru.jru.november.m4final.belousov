@@ -26,7 +26,8 @@ public class City {
     private Integer population;
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -36,7 +37,8 @@ public class City {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         City city = (City) o;
@@ -44,7 +46,8 @@ public class City {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(id);
     }
 }

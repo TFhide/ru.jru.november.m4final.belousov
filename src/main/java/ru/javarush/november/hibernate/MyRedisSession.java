@@ -9,10 +9,17 @@ public class MyRedisSession {
 
     public RedisClient prepareRedisClient()
     {
-        redisClient = RedisClient.create(RedisURI.create("localhost", 8001));
+        redisClient = RedisClient.create(RedisURI.create("localhost", 6379));
         try(StatefulRedisConnection<String, String> connect = redisClient.connect()) {
             System.out.println("\nConnected to Redis\n");
         }
         return redisClient;
+    }
+
+    public void shutdownRedisSession()
+    {
+        if(redisClient.connect().isOpen()) {
+            redisClient.shutdown();
+        }
     }
 }

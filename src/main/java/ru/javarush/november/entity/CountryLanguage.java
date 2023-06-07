@@ -30,7 +30,8 @@ public class CountryLanguage {
     private BigDecimal percentage;
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "CountryLanguage{" +
                 "id=" + id +
                 ", country=" + country +
@@ -41,7 +42,8 @@ public class CountryLanguage {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CountryLanguage that = (CountryLanguage) o;
@@ -49,7 +51,8 @@ public class CountryLanguage {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(id);
     }
 }
